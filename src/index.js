@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import payment from 'payment';
 import creditCardType from 'credit-card-type';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import images from './images';
 
@@ -92,6 +93,7 @@ class CreditCardInput extends Component {
     this.handleCardNumberBlur = this.handleCardNumberBlur.bind(this);
     this.handleCardNumberChange = this.handleCardNumberChange.bind(this);
     this.handleCardExpiryBlur = this.handleCardExpiryBlur.bind(this);
+    this.validateExpirationDate = this.validateExpirationDate.bind(this);
     this.handleCardExpiryChange = this.handleCardExpiryChange.bind(this);
     this.handleCVCBlur = this.handleCVCBlur.bind(this);
     this.handleCVCChange = this.handleCVCChange.bind(this);
@@ -118,6 +120,21 @@ class CreditCardInput extends Component {
       cardNumberInputProps.onBlur(e);
     }
   }
+
+  validateExpirationDate (date) {
+    const expiry = date.split(' / ')
+    if (expiry.length < 2) {
+        return
+    }
+    let year = Number(expiry[1])
+    let month = Number(expiry[0])
+    let newDate = "20" + year + " " + month
+
+    if (moment(newDate).isValid()) {
+        return true
+    }
+    return
+}
 
   handleCardNumberChange(e) {
     const cardNumber = e.target.value;
@@ -158,7 +175,7 @@ class CreditCardInput extends Component {
   }
 
   handleCardExpiryBlur(e) {
-    if (!payment.fns.validateCardExpiry(e.target.value)) {
+    if (!this.validateExpirationDate(e.target.value)) {
       this.setFieldInvalid('Expiry date is invalid');
     }
 
@@ -166,7 +183,7 @@ class CreditCardInput extends Component {
     if (cardExpiryInputProps.onBlur) {
       cardExpiryInputProps.onBlur(e);
     }
-  }
+  } 
 
   handleCardExpiryChange(e) {
     const cardExpiry = e.target.value;
@@ -175,7 +192,7 @@ class CreditCardInput extends Component {
 
     this.setFieldValid();
     if (cardExpiryLength >= 4) {
-      if (payment.fns.validateCardExpiry(cardExpiry)) {
+      if (this.validateExpirationDate(cardExpiry)) {
         document.getElementById('cvc').focus();
       } else {
         this.setFieldInvalid('Expiry date is invalid');
@@ -268,6 +285,7 @@ class CreditCardInput extends Component {
               pattern="[0-9]*"
               placeholder="MM / YY"
               type="text"
+              maxLength={7}
               {...cardExpiryInputProps}
               onBlur={this.handleCardExpiryBlur}
               onChange={this.handleCardExpiryChange}
@@ -280,6 +298,7 @@ class CreditCardInput extends Component {
               pattern="[0-9]*"
               placeholder="CVC"
               type="text"
+              maxLength={3}
               {...cardCVCInputProps}
               onBlur={this.handleCVCBlur}
               onChange={this.handleCVCChange}

@@ -23,6 +23,7 @@
   "dependencies": {
     "babel-loader": "^7.1.2",
     "credit-card-type": "^6.1.0",
+    "moment": "^2.19.2",
     "payment": "^2.3.0",
     "prop-types": "^15.6.0",
     "styled-components": "^2.2.3",
