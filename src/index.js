@@ -62,7 +62,10 @@ const BACKSPACE_KEY_CODE = 8;
 const CARD_TYPES = {
   mastercard: 'MASTERCARD',
   visa: 'VISA',
-  amex: 'AMERICAN_EXPRESS'
+  amex: 'AMERICAN_EXPRESS',
+  dinersclub: 'DINERS_CLUB',
+  maestro: 'MAESTRO',
+  visaelectron: 'VISA_ELECTRON'
 };
 
 class CreditCardInput extends Component {
